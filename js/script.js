@@ -313,3 +313,64 @@ window.VittaeApp = {
     isMobile,
     isTablet
 };
+
+const loginBtn = document.getElementById('loginBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const loginDropdown = document.getElementById('loginDropdown');
+const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+// Função para posicionar o dropdown
+function positionDropdown() {
+  const btnRect = loginBtn.getBoundingClientRect();
+  dropdownMenu.style.top = `${btnRect.bottom + 8}px`;
+  dropdownMenu.style.left = `${btnRect.left}px`;
+}
+
+// Abrir/fechar dropdown
+loginBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  
+  const isActive = dropdownMenu.classList.contains('active');
+  
+  if (!isActive) {
+    positionDropdown(); // Calcula posição antes de abrir
+  }
+  
+  dropdownMenu.classList.toggle('active');
+  
+  console.log('Menu dropdown:', dropdownMenu.classList.contains('active') ? 'ABERTO' : 'FECHADO');
+});
+
+// Reposicionar ao rolar a página (se necessário)
+window.addEventListener('scroll', function() {
+  if (dropdownMenu.classList.contains('active')) {
+    positionDropdown();
+  }
+});
+
+// Reposicionar ao redimensionar janela
+window.addEventListener('resize', function() {
+  if (dropdownMenu.classList.contains('active')) {
+    positionDropdown();
+  }
+});
+
+// Fechar ao clicar fora
+document.addEventListener('click', function(e) {
+  if (!loginDropdown.contains(e.target)) {
+    dropdownMenu.classList.remove('active');
+  }
+});
+
+// Ação ao selecionar uma opção
+dropdownItems.forEach(item => {
+  item.addEventListener('click', function() {
+    const role = this.getAttribute('data-role');
+    console.log('Login selecionado:', role);
+    
+    alert('Login como: ' + role);
+    
+    dropdownMenu.classList.remove('active');
+  });
+});
